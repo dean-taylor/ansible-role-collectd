@@ -1,0 +1,59 @@
+# Config file for collectd(1).
+#
+# Some plugins need additional configuration and are disabled by default.
+# Please read collectd.conf(5) for details.
+#
+# You should also read /usr/share/doc/collectd-core/README.Debian.plugins
+# before enabling any more plugins.
+
+##############################################################################
+# Global                                                                     #
+#----------------------------------------------------------------------------#
+# Global settings for the daemon.                                            #
+##############################################################################
+
+#Hostname "localhost"
+FQDNLookup true
+#BaseDir "/var/lib/collectd"
+#PluginDir "/usr/lib/collectd"
+#TypesDB "/usr/share/collectd/types.db" "/etc/collectd/my_types.db"
+
+#----------------------------------------------------------------------------#
+# When enabled, plugins are loaded automatically with the default options    #
+# when an appropriate <Plugin ...> block is encountered.                     #
+# Disabled by default.                                                       #
+#----------------------------------------------------------------------------#
+#AutoLoadPlugin false
+
+#----------------------------------------------------------------------------#
+# When enabled, internal statistics are collected, using "collectd" as the   #
+# plugin name.                                                               #
+# Disabled by default.                                                       #
+#----------------------------------------------------------------------------#
+#CollectInternalStats false
+
+{% for plugin, p in plugins.items() %}
+{% if not plugin.hasKey('enabled') %}
+LoadPlugin {{plugin}}
+  {% if p|length %}
+<Plugin {{plugin}}>
+  {% for k, v in p.items() %}
+    {% if v is string %}
+  {{k}} "{{v}}"
+    {% elif v is number %}
+  {{k}} {{v}}
+    {% elif v is iterable %}
+      {% for _v in v %}
+  {{k}} {{_v}}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</Plugin>
+  {% endif %}
+{% endif %}
+{% endfor %}
+
+<Include "/etc/collectd/collectd.conf.d">
+  Filter "*.conf"
+</Include>
+

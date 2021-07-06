@@ -1,2 +1,9 @@
 ---
 # tasks file for collectd
+- name: install
+  ansible.builtin.include_tasks:
+    file: install.yml
+
+- name: configure
+  ansible.builtin.include_tasks:
+    file: configure.yml

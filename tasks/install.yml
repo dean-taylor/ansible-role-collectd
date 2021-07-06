@@ -1,0 +1,10 @@
+---
+# Collectd install
+
+- name: install
+  ansible.builtin.apt:
+    cache_valid_time: 86400
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - collectd

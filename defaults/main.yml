@@ -1,2 +1,46 @@
 ---
 # defaults file for collectd
+Hostname: localhost
+FQDNLookup: true
+BaseDir: "/var/lib/collectd"
+PluginDir: "/usr/lib/collectd"
+TypesDB:
+  - "/usr/share/collectd/types.db"
+  - "/etc/collectd/my_types.db"
+AutoLoadPlugin: false
+CollectInternalStats: false
+Interval: 10
+MaxReadInterval: 86400
+Timeout: 2
+ReadThreads: 5
+WriteThreads: 5
+WriteQueueLimitHigh: 1000000
+WriteQueueLimitLow: 800000
+
+plugins:
+  syslog:
+    LogLevel: info
+  battery: {}
+  cpu: {}
+  df:
+    FSType:
+      - rootfs
+      - sysfs
+      - proc
+      - devtmpfs
+      - devpts
+      - tmpfs
+      - fusectl
+      - cgroup
+    IgnoreSelected: true
+  disk: {}
+  entropy: {}
+  interface: {}
+  irq: {}
+  load: {}
+  memory: {}
+  processes: {}
+  rrdtool:
+    DataDir: "/var/lib/collectd/rrd"
+  swap: {}
+  users: {}

@@ -1,0 +1,15 @@
+---
+# Collectd configuration
+
+- name: collectd.conf
+  ansible.builtin.template:
+    backup: yes
+    dest: /etc/collectd/collectd.conf
+    lstrip_blocks: yes
+    mode: 0644
+    owner: root
+    src: collectd.conf.j2
+    trim_blocks: yes
+    validate: /usr/sbin/collectd -C %s -t
+  notify:
+    - Restart collectd service

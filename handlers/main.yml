@@ -1,2 +1,6 @@
 ---
 # handlers file for collectd
+- name: Restart collectd service
+  ansible.builtin.service:
+    name: collectd
+    state: restarted
